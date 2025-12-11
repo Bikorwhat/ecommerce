@@ -12,7 +12,7 @@ export default function SearchPage() {
     if (!query) return;
 
     const fetchResults = async () => {
-      const res = await api.get(`http://127.0.0.1:8000/products/search/?q=${query}`);
+      const res = await api.get( `${API_BASE}/products/search/?q=${query}`);
       console.log(res.data);
       setResults(res.data);
     };

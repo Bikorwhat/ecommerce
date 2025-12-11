@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
+const API_BASE = env.REACT_APP_API_URL || "http://localhost:8000";
+
 
 function CardList() {
   const [cardList, setcardList] = useState([]);
@@ -8,7 +10,7 @@ function CardList() {
 
   useEffect(() => {
     // Fetch categories
-    fetch("http://127.0.0.1:8000/products/categories/")
+    fetch( `${API_BASE}/products/categories/`)
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error("Error fetching categories:", err));
@@ -17,8 +19,8 @@ function CardList() {
   useEffect(() => {
     // Fetch products, optionally filtered by category
     const url = selectedCategory
-      ? `http://127.0.0.1:8000/products/cards/?category=${selectedCategory}`
-      : "http://127.0.0.1:8000/products/cards/";
+      ? `${API_BASE}/products/cards/?category=${selectedCategory}`
+      :  `${API_BASE}/products/cards/`;
 
     fetch(url)
       .then(res => res.json())

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { CartContext } from "./cartContext";
 import { AuthContext } from "./AuthContext";
 import api from "./api";
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 export default function Cart() {
   const { cart, removeCart } = useContext(CartContext);
@@ -28,7 +29,7 @@ export default function Cart() {
     // Check if user is authenticated
     if (!isAuthenticated()) {
       alert("Please log in to proceed with payment");
-      window.location.href = "http://127.0.0.1:8000/login";
+      window.location.href =  `${API_BASE}/login`;
       return;
     }
 

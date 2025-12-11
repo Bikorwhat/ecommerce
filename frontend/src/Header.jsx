@@ -13,7 +13,7 @@ const Header = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   const login = () => {
-    window.location.href = "http://127.0.0.1:8000/login";
+    window.location.href =  `${API_BASE}/login`;
   }
 
   const handleLogout = () => {
@@ -33,7 +33,7 @@ const Header = () => {
       const fetchSuggestions = async () => {
         try {
           const res = await api.get(
-            `http://127.0.0.1:8000/products/search/?q=${query}`
+            `${API_BASE}/products/search/?q=${query}`
           );
           setSuggestions(res.data);
         } catch (err) {
