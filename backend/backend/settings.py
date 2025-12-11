@@ -29,15 +29,22 @@ load_dotenv(BASE_DIR / '.env', override=True)
 SECRET_KEY = 'django-insecure-^ch3y(2&okkupbw9$%psioziucixj!im&!m)ztumvdwa8u0!&y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 if not DEBUG:
     STATICFILES_DIRS = []
 
 ALLOWED_HOSTS = ['ecommerce-2as4.onrender.com','127.0.0.1','localhost']
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+# Session and CSRF settings for production
+SESSION_COOKIE_SECURE = not DEBUG  # Use secure cookies in production (HTTPS)
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = ['https://ecommerce-2as4.onrender.com']
+
+# Session engine - use database-backed sessions for production reliability
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # Application definition
 
 INSTALLED_APPS = [
