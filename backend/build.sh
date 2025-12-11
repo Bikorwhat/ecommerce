@@ -9,7 +9,7 @@ echo "Running database migrations..."
 python manage.py migrate --noinput
 
 echo "Creating superuser (if not exists)..."
-python manage.py createsuperuser
+python manage.py createsuperuser --noinput || true
 
 echo "Loading initial data (if database is empty)..."
 python manage.py load_initial_data
