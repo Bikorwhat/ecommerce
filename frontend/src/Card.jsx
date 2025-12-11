@@ -24,6 +24,10 @@ const Card = ({
       setError("Quantity must be at least 1");
       return;
     }
+    if (price * qty < 10) {
+    alert("Khalti doesn't allow payments below Rs. 10");
+    return;
+    }
 
     // Check if user is authenticated
     if (!isAuthenticated()) {

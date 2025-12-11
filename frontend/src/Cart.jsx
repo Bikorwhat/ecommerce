@@ -22,7 +22,9 @@ export default function Cart() {
       alert("Your cart is empty!");
       return;
     }
-
+    
+    
+  
     // Check if user is authenticated
     if (!isAuthenticated()) {
       alert("Please log in to proceed with payment");
