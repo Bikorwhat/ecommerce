@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { CartContext } from "./cartContext";
 import { AuthContext } from "./AuthContext";
-import api from "./api";
+import api, { API_BASE } from "./api";
 
 const Header = () => {
   const { cart } = useContext(CartContext);
@@ -13,7 +13,7 @@ const Header = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   const login = () => {
-    window.location.href =  `${API_BASE}/login`;
+    window.location.href = `${API_BASE}/login`;
   }
 
   const handleLogout = () => {

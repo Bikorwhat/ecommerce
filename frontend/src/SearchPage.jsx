@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import api from "./api";
+import api, { API_BASE } from "./api";
 import Card from "./Card";
 
 export default function SearchPage() {
@@ -12,7 +12,7 @@ export default function SearchPage() {
     if (!query) return;
 
     const fetchResults = async () => {
-      const res = await api.get( `${API_BASE}/products/search/?q=${query}`);
+      const res = await api.get(`${API_BASE}/products/search/?q=${query}`);
       console.log(res.data);
       setResults(res.data);
     };
@@ -26,14 +26,14 @@ export default function SearchPage() {
       <div className="flex flex-wrap gap-4 mt-4">
         {results.map((item) => (
           <Card
-    key={item.id}
-    image={item.image_url}  // <-- explicitly map it
-    name={item.name}
-    description={item.description}
-    price={item.price}
-    productId={item.id}
-    category_name={item.category_name}
-  />
+            key={item.id}
+            image={item.image_url}  // <-- explicitly map it
+            name={item.name}
+            description={item.description}
+            price={item.price}
+            productId={item.id}
+            category_name={item.category_name}
+          />
         ))}
       </div>
     </div>

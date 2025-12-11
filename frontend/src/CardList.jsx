@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
-const API_BASE = env.REACT_APP_API_URL || "http://localhost:8000";
+import { API_BASE } from "./api";
 
 
 function CardList() {
@@ -10,7 +10,7 @@ function CardList() {
 
   useEffect(() => {
     // Fetch categories
-    fetch( `${API_BASE}/products/categories/`)
+    fetch(`${API_BASE}/products/categories/`)
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error("Error fetching categories:", err));
@@ -20,7 +20,7 @@ function CardList() {
     // Fetch products, optionally filtered by category
     const url = selectedCategory
       ? `${API_BASE}/products/cards/?category=${selectedCategory}`
-      :  `${API_BASE}/products/cards/`;
+      : `${API_BASE}/products/cards/`;
 
     fetch(url)
       .then(res => res.json())
@@ -35,8 +35,8 @@ function CardList() {
         <button
           onClick={() => setSelectedCategory(null)}
           className={`px-4 py-2 rounded-lg font-semibold transition ${selectedCategory === null
-              ? "bg-indigo-500 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            ? "bg-indigo-500 text-white"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
         >
           All Products
@@ -46,8 +46,8 @@ function CardList() {
             key={category.id}
             onClick={() => setSelectedCategory(category.id)}
             className={`px-4 py-2 rounded-lg font-semibold transition ${selectedCategory === category.id
-                ? "bg-indigo-500 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-indigo-500 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
           >
             {category.name}

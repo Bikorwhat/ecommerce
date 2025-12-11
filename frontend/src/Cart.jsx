@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
 import { CartContext } from "./cartContext";
 import { AuthContext } from "./AuthContext";
-import api from "./api";
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
+import api, { API_BASE } from "./api";
 
 export default function Cart() {
   const { cart, removeCart } = useContext(CartContext);
@@ -23,13 +22,13 @@ export default function Cart() {
       alert("Your cart is empty!");
       return;
     }
-    
-    
-  
+
+
+
     // Check if user is authenticated
     if (!isAuthenticated()) {
       alert("Please log in to proceed with payment");
-      window.location.href =  `${API_BASE}/login`;
+      window.location.href = `${API_BASE}/login`;
       return;
     }
 
@@ -127,8 +126,8 @@ export default function Cart() {
               onClick={payout}
               disabled={isLoading}
               className={`px-6 py-2 rounded font-bold ${isLoading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600 text-white"
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600 text-white"
                 }`}
             >
               {isLoading ? "Processing..." : "Proceed to Payment"}
