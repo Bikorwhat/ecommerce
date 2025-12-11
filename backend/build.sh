@@ -8,6 +8,12 @@ pip install -r requirements.txt
 echo "Running database migrations..."
 python manage.py migrate --noinput
 
+echo "Creating superuser (if not exists)..."
+python manage.py create_superuser
+
+echo "Loading initial data (if database is empty)..."
+python manage.py load_initial_data
+
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
