@@ -31,6 +31,9 @@ SECRET_KEY = 'django-insecure-^ch3y(2&okkupbw9$%psioziucixj!im&!m)ztumvdwa8u0!&y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if not DEBUG:
+    STATICFILES_DIRS = []
+
 ALLOWED_HOSTS = ['ecommerce-2as4.onrender.com','127.0.0.1','localhost']
 
 SESSION_COOKIE_SECURE = False
@@ -140,6 +143,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
