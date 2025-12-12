@@ -95,6 +95,8 @@ def khalti_verify(request):
         pidx = data["pidx"]                     # sent by Khalti in return_url query
         items = data.get("items", [])           # Get items from request
 
+        print(f"Received items from frontend: {items}")
+
         payload = {"pidx": pidx}
         headers = {
             "Authorization": f"Key {KHALTI_SECRET_KEY}",
@@ -113,6 +115,7 @@ def khalti_verify(request):
             user_name = getattr(user, 'name', '') or user.username
             
             print(f"Saving purchase for user: {user_identifier}, email: {user_email}, name: {user_name}")
+            print(f"Items to save: {items}")
             
             # Save purchase history
             purchase = PurchaseHistory.objects.create(

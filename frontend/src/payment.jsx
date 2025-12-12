@@ -23,12 +23,16 @@ function PaymentSuccess() {
 
   const verifyPayment = async () => {
     try {
+      console.log('Cart contents:', cart);
+
       // Prepare items from cart
       const items = cart.map(item => ({
         name: item.name,
         quantity: item.qty,
         price: item.price
       }));
+
+      console.log('Items being sent to verify:', items);
 
       const response = await api.post("/khalti/verify/", {
         pidx: pidx,
