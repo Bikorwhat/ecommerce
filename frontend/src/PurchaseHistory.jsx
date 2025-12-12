@@ -80,31 +80,16 @@ function PurchaseHistory() {
                     </button>
                 </div>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
-                        <thead className="bg-gray-100">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
-                                    Order #
-                                </th>
-                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
-                                    Purchase Date
-                                </th>
-                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
-                                    Total Amount
-                                </th>
-                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {purchases.map((purchase, index) => (
-                                <tr key={purchase.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                    <td className="px-6 py-4 text-sm text-gray-900 border-b">
-                                        #{purchase.purchase_order_id}
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-900 border-b">
+                <div className="space-y-4">
+                    {purchases.map((purchase) => (
+                        <div key={purchase.id} className="border border-gray-300 rounded-lg bg-white shadow-md overflow-hidden">
+                            {/* Header Row */}
+                            <div className="bg-gray-100 px-6 py-4 flex justify-between items-center">
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">
+                                        Order #{purchase.purchase_order_id || purchase.id}
+                                    </h3>
+                                    <p className="text-sm text-gray-600">
                                         {new Date(purchase.purchase_date).toLocaleDateString("en-US", {
                                             year: "numeric",
                                             month: "short",
@@ -112,22 +97,51 @@ function PurchaseHistory() {
                                             hour: "2-digit",
                                             minute: "2-digit",
                                         })}
-                                    </td>
-                                    <td className="px-6 py-4 text-sm font-bold text-green-600 border-b">
+                                    </p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-2xl font-bold text-green-600">
                                         Rs. {purchase.total_amount}
-                                    </td>
-                                    <td className="px-6 py-4 text-sm border-b">
-                                        <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${purchase.status === "Completed"
-                                                ? "bg-green-100 text-green-800"
-                                                : "bg-yellow-100 text-yellow-800"
-                                            }`}>
-                                            {purchase.status}
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                    </p>
+                                    <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${purchase.status === "Completed"
+                                            ? "bg-green-100 text-green-800"
+                                            : "bg-yellow-100 text-yellow-800"
+                                        }`}>
+                                        {purchase.status}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Items Table */}
+                            {purchase.items && purchase.items.length > 0 && (
+                                <div className="px-6 py-4">
+                                    <h4 className="font-semibold text-gray-700 mb-3">Items Purchased:</h4>
+                                    <table className="min-w-full">
+                                        <thead className="bg-gray-50">
+                                            <tr>
+                                                <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Product Name</th>
+                                                <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Quantity</th>
+                                                <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Price</th>
+                                                <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {purchase.items.map((item, idx) => (
+                                                <tr key={idx} className="border-t border-gray-200">
+                                                    <td className="px-4 py-3 text-sm text-gray-900">{item.name}</td>
+                                                    <td className="px-4 py-3 text-sm text-gray-700">{item.quantity}</td>
+                                                    <td className="px-4 py-3 text-sm text-gray-700">Rs. {item.price}</td>
+                                                    <td className="px-4 py-3 text-sm font-semibold text-gray-900">
+                                                        Rs. {(parseFloat(item.quantity) * parseFloat(item.price)).toFixed(2)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
