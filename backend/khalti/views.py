@@ -107,8 +107,8 @@ def khalti_verify(request):
 
         # verification["status"] == "Completed" means success
         if verification.get("status") == "Completed":
-            # Get user identifier - try multiple attributes
-            user_identifier = getattr(user, 'sub', None) or getattr(user, 'id', None) or user.username
+            # Get user identifier - use Auth0 sub, not Django user ID
+            user_identifier = getattr(user, 'auth0_sub', None) or getattr(user, 'sub', None) or user.username
             user_email = getattr(user, 'email', '') or f"{user.username}@example.com"
             user_name = getattr(user, 'name', '') or user.username
             
@@ -146,8 +146,8 @@ def get_purchase_history(request):
     try:
         # Get authenticated user from JWT
         user = request.user
-        # Try multiple attributes to get user identifier
-        user_sub = getattr(user, 'sub', None) or getattr(user, 'id', None) or user.username
+        # Use Auth0 sub, not Django user ID
+        user_sub = getattr(user, 'auth0_sub', None) or getattr(user, 'sub', None) or user.username
         
         print(f"Fetching purchase history for user: {user_sub}")
         
