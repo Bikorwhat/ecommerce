@@ -36,7 +36,7 @@ def callback(request):
         if access_token and user_info:
             # Redirect to frontend with the access token
             # The frontend will store this token and use it for API calls
-            frontend_url = f"http://localhost:5173/auth/callback?token={access_token}"
+            frontend_url = f"{settings.FRONTEND_URL}/auth/callback?token={access_token}"
             return redirect(frontend_url)
         
         return HttpResponse("Authentication failed - no token received", status=400)

@@ -167,6 +167,9 @@ AUTH0_AUDIENCE = os.getenv('AUTH0_AUDIENCE', 'https://shopping.com')  # Auth0 AP
 AUTH0_CLIENT_ID = os.getenv('AUTH0_CLIENT_ID')
 AUTH0_CLIENT_SECRET = os.getenv('AUTH0_CLIENT_SECRET')
 
+# Frontend URL for Auth0 callback redirects
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
+
 # REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
