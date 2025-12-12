@@ -4,6 +4,7 @@ import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -42,8 +43,8 @@ def khalti_initiate(request):
         user_email = getattr(user, 'email', None) or 'customer@example.com'
         
         payload = {
-            "return_url": "http://localhost:5173/payment/success",   # React page
-            "website_url": "http://localhost:5173",
+            "return_url": f"{settings.FRONTEND_URL}/payment/success",   # React page
+            "website_url": settings.FRONTEND_URL,
             "amount": amount,
             "purchase_order_id": purchase_order_id,
             "purchase_order_name": purchase_order_name,
