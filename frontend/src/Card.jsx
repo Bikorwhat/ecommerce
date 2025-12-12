@@ -26,8 +26,8 @@ const Card = ({
       return;
     }
     if (price * qty < 10) {
-    alert("Khalti doesn't allow payments below Rs. 10");
-    return;
+      alert("Khalti doesn't allow payments below Rs. 10");
+      return;
     }
 
     // Check if user is authenticated
@@ -56,6 +56,9 @@ const Card = ({
         purchase_order_name: `${name} × ${qty}`,
         items: items
       };
+
+      // Store items in localStorage for later retrieval after payment
+      localStorage.setItem('pending_purchase_items', JSON.stringify(items));
 
       const res = await api.post("/khalti/initiate/", payload);
       const { payment_url } = res.data;

@@ -49,6 +49,9 @@ export default function Cart() {
         items: items
       };
 
+      // Store items in localStorage for later retrieval after payment
+      localStorage.setItem('pending_purchase_items', JSON.stringify(items));
+
       const res = await api.post("/khalti/initiate/", payload);
       const { payment_url } = res.data;
       console.log("Redirecting to Khalti payment...");

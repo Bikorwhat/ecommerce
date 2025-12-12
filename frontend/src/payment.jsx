@@ -25,12 +25,22 @@ function PaymentSuccess() {
     try {
       console.log('Cart contents:', cart);
 
-      // Prepare items from cart
-      const items = cart.map(item => ({
-        name: item.name,
-        quantity: item.qty,
-        price: item.price
-      }));
+      // Try to get items from localStorage first (stored before payment redirect)
+      let items = [];
+      const storedItems = localStorage.getItem('pending_purchase_items');
+
+      if (storedItems) {
+        items = JSON.parse(storedItems);
+        console.log('Retrieved items from localStorage:', items);
+      } else {
+        // Fallback to cart if localStorage is empty
+        items = cart.map(item => ({
+          name: item.name,
+          quantity: item.qty,
+          price: item.price
+        }));
+        console.log('Using items from cart:', items);
+      }
 
       console.log('Items being sent to verify:', items);
 
@@ -43,7 +53,8 @@ function PaymentSuccess() {
         setStatus("success");
         setData(response.data);
 
-        // Clear cart after successful payment
+        // Clear stored items and cart after successful payment
+        localStorage.removeItem('pending_purchase_items');
         localStorage.removeItem('cart');
         if (setCart) {
           setCart([]);
