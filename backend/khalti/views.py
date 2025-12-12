@@ -107,11 +107,18 @@ def khalti_verify(request):
 
         # verification["status"] == "Completed" means success
         if verification.get("status") == "Completed":
+            # Get user identifier - try multiple attributes
+            user_identifier = getattr(user, 'sub', None) or getattr(user, 'id', None) or user.username
+            user_email = getattr(user, 'email', '') or f"{user.username}@example.com"
+            user_name = getattr(user, 'name', '') or user.username
+            
+            print(f"Saving purchase for user: {user_identifier}, email: {user_email}, name: {user_name}")
+            
             # Save purchase history
             purchase = PurchaseHistory.objects.create(
-                user_sub=getattr(user, 'id', None),
-                user_email=getattr(user, 'email', ''),
-                user_name=getattr(user, 'name', ''),
+                user_sub=user_identifier,
+                user_email=user_email,
+                user_name=user_name,
                 total_amount=verification.get('total_amount', 0) / 100,  # Convert from paisa to Rs
                 items=items,
                 pidx=pidx,
@@ -139,10 +146,15 @@ def get_purchase_history(request):
     try:
         # Get authenticated user from JWT
         user = request.user
-        user_sub = getattr(user, 'id', None)
+        # Try multiple attributes to get user identifier
+        user_sub = getattr(user, 'sub', None) or getattr(user, 'id', None) or user.username
+        
+        print(f"Fetching purchase history for user: {user_sub}")
         
         # Get all purchases for this user
         purchases = PurchaseHistory.objects.filter(user_sub=user_sub)
+        
+        print(f"Found {purchases.count()} purchases for user {user_sub}")
         
         # Serialize the data
         purchase_data = []
