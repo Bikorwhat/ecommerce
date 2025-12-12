@@ -87,7 +87,9 @@ function PurchaseHistory() {
                             <div className="bg-gray-100 px-6 py-4 flex justify-between items-center">
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900">
-                                        Order #{purchase.purchase_order_id || purchase.id}
+                                        {purchase.items && purchase.items.length > 0
+                                            ? purchase.items[0].name
+                                            : `Purchase #${purchase.id}`}
                                     </h3>
                                     <p className="text-sm text-gray-600">
                                         {new Date(purchase.purchase_date).toLocaleDateString("en-US", {
@@ -104,8 +106,8 @@ function PurchaseHistory() {
                                         Rs. {purchase.total_amount}
                                     </p>
                                     <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${purchase.status === "Completed"
-                                            ? "bg-green-100 text-green-800"
-                                            : "bg-yellow-100 text-yellow-800"
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-yellow-100 text-yellow-800"
                                         }`}>
                                         {purchase.status}
                                     </span>
