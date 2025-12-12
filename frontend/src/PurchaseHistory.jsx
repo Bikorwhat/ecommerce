@@ -97,8 +97,8 @@ function PurchaseHistory() {
                                     </p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-2xl font-bold text-green-600">
-                                        Rs. {purchase.total_amount}
+                                    <p className="text-2xl text-green-600">
+                                        <b>Grand Total: Rs.</b> {purchase.total_amount}
                                     </p>
                                     <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${purchase.status === "Completed"
                                         ? "bg-green-100 text-green-800"
