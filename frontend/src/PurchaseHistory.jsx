@@ -82,15 +82,10 @@ function PurchaseHistory() {
             ) : (
                 <div className="space-y-4">
                     {purchases.map((purchase) => (
-                        <div key={purchase.id} className="border border-gray-300 rounded-lg bg-white shadow-md overflow-hidden">
+                        <div key={purchase.purchase_order_id} className="border border-gray-300 rounded-lg bg-white shadow-md overflow-hidden">
                             {/* Header Row */}
                             <div className="bg-gray-100 px-6 py-4 flex justify-between items-center">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900">
-                                        {purchase.items && purchase.items.length > 0
-                                            ? purchase.items[0].name
-                                            : `Purchase #${purchase.id}`}
-                                    </h3>
                                     <p className="text-sm text-gray-600">
                                         {new Date(purchase.purchase_date).toLocaleDateString("en-US", {
                                             year: "numeric",
