@@ -7,6 +7,7 @@ import Cart from './Cart.jsx'
 import { CartContext } from './cartContext'
 import SearchPage from './SearchPage.jsx'
 import CallbackHandler from './CallbackHandler.jsx'
+import PurchaseHistory from './PurchaseHistory.jsx'
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -52,6 +53,7 @@ function App() {
           <Route path="/" element={<CardList />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/history" element={<PurchaseHistory />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/auth/callback" element={<CallbackHandler />} />
         </Routes>

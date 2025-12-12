@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { CartContext } from "./cartContext";
 import { AuthContext } from "./AuthContext";
@@ -8,6 +8,7 @@ const Header = () => {
   const { cart } = useContext(CartContext);
   const { user, logout, isAuthenticated } = useContext(AuthContext);
   const uniqueItemCount = cart.length;
+  const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -19,6 +20,10 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     window.location.href = "/";
+  }
+
+  const handleProfile = () => {
+    navigate("/history");
   }
 
   // Debounce effect
@@ -106,6 +111,13 @@ const Header = () => {
           <span className="text-white text-sm">
             {user?.name || user?.email || 'User'}
           </span>
+          <button
+            type="button"
+            onClick={handleProfile}
+            className="text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded"
+          >
+            History
+          </button>
           <button
             type="button"
             onClick={handleLogout}
