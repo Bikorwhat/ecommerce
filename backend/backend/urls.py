@@ -26,6 +26,11 @@ urlpatterns = [
     path('khalti/',include('khalti.urls')),
     path('',include('auth.urls')),
 ]
+
+# Serve media files in all environments
+# Note: In production, consider using a CDN or cloud storage (e.g., AWS S3, Cloudinary)
+# for better performance and scalability
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
