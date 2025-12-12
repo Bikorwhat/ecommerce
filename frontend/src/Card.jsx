@@ -3,6 +3,7 @@ import api from "./api";
 import { useContext } from "react";
 import { CartContext } from "./cartContext";
 import { AuthContext } from "./AuthContext";
+import { API_BASE } from "./api";
 
 const Card = ({
   image,
@@ -32,7 +33,7 @@ const Card = ({
     // Check if user is authenticated
     if (!isAuthenticated()) {
       alert("Please log in to proceed with payment");
-      window.location.href = "http://127.0.0.1:8000/login";
+      window.location.href = `${API_BASE}/login`;
       return;
     }
 
