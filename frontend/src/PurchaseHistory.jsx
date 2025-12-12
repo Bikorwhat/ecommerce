@@ -24,12 +24,16 @@ function PurchaseHistory() {
     const fetchPurchaseHistory = async () => {
         try {
             setLoading(true);
+            console.log('Fetching purchase history from:', '/khalti/history/');
             const response = await api.get("/khalti/history/");
+            console.log('Purchase history response:', response.data);
             setPurchases(response.data);
             setError(null);
         } catch (err) {
-            console.error("Error fetching purchase history:", err);
-            setError("Failed to load purchase history");
+            console.error('Error fetching purchase history:', err);
+            console.error('Error response:', err.response);
+            console.error('Error message:', err.message);
+            setError(err.response?.data?.error || err.message || "Failed to load purchase history");
         } finally {
             setLoading(false);
         }

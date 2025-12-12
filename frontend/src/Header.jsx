@@ -19,7 +19,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    window.location.href = "/";
+    navigate("/", { replace: true });
   }
 
   const handleProfile = () => {
