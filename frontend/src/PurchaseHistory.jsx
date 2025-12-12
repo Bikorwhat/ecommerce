@@ -1,59 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./api";
+import { AuthContext } from "./AuthContext";
 
 function PurchaseHistory() {
-    const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+    const { isAuthenticated } = useContext(AuthContext);
     const [purchases, setPurchases] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isLoading) return;
-
-        if (!isAuthenticated) {
-            loginWithRedirect();
+        // Check if user is authenticated
+        if (!isAuthenticated()) {
+            navigate("/");
             return;
         }
 
         fetchPurchaseHistory();
-    }, [isAuthenticated, isLoading, loginWithRedirect]);
+    }, [isAuthenticated, navigate]);
 
     const fetchPurchaseHistory = async () => {
         try {
             setLoading(true);
-            console.log('Fetching purchase history from:', '/khalti/history/');
-            const response = await api.get("/khalti/history/");
-            console.log('Purchase history response:', response.data);
-            setPurchases(response.data);
             setError(null);
+
+            console.log('Fetching purchase history...');
+            const response = await api.get("/khalti/history/");
+            console.log('Response:', response.data);
+
+            setPurchases(response.data);
         } catch (err) {
-            console.error('Error fetching purchase history:', err);
-            console.error('Error response:', err.response);
-            console.error('Error message:', err.message);
+            console.error('Error:', err);
             setError(err.response?.data?.error || err.message || "Failed to load purchase history");
         } finally {
             setLoading(false);
         }
     };
 
-    if (isLoading || loading) {
-        return (
-            <div className="p-8 text-center">
-                <h2 className="text-2xl font-bold">Loading...</h2>
-            </div>
-        );
-    }
-
     if (error) {
         return (
             <div className="p-8 text-center">
-                <h2 className="text-2xl font-bold text-red-600">{error}</h2>
+                <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
+                <p className="text-gray-700 mb-4">{error}</p>
                 <button
                     onClick={fetchPurchaseHistory}
-                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
                 >
                     Retry
                 </button>
@@ -73,72 +65,69 @@ function PurchaseHistory() {
                 </button>
             </div>
 
-            {purchases.length === 0 ? (
+            {loading ? (
                 <div className="text-center py-12">
-                    <p className="text-xl text-gray-600">No purchases yet</p>
+                    <p className="text-xl text-gray-600">Loading your purchases...</p>
+                </div>
+            ) : purchases.length === 0 ? (
+                <div className="text-center py-12">
+                    <p className="text-xl text-gray-600 mb-4">No purchases yet</p>
                     <button
                         onClick={() => navigate("/")}
-                        className="mt-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+                        className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
                     >
                         Start Shopping
                     </button>
                 </div>
             ) : (
-                <div className="space-y-4">
-                    {purchases.map((purchase) => (
-                        <div
-                            key={purchase.id}
-                            className="border rounded-lg p-4 bg-white shadow-md"
-                        >
-                            <div className="flex justify-between items-start mb-3">
-                                <div>
-                                    <h3 className="text-lg font-semibold">
-                                        Order #{purchase.purchase_order_id}
-                                    </h3>
-                                    <p className="text-sm text-gray-600">
+                <div className="overflow-x-auto">
+                    <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                                    Order #
+                                </th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                                    Purchase Date
+                                </th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                                    Total Amount
+                                </th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {purchases.map((purchase, index) => (
+                                <tr key={purchase.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                    <td className="px-6 py-4 text-sm text-gray-900 border-b">
+                                        #{purchase.purchase_order_id}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm text-gray-900 border-b">
                                         {new Date(purchase.purchase_date).toLocaleDateString("en-US", {
                                             year: "numeric",
-                                            month: "long",
+                                            month: "short",
                                             day: "numeric",
                                             hour: "2-digit",
                                             minute: "2-digit",
                                         })}
-                                    </p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-2xl font-bold text-green-600">
+                                    </td>
+                                    <td className="px-6 py-4 text-sm font-bold text-green-600 border-b">
                                         Rs. {purchase.total_amount}
-                                    </p>
-                                    <span
-                                        className={`inline-block px-3 py-1 rounded text-sm ${purchase.status === "Completed"
-                                            ? "bg-green-100 text-green-800"
-                                            : "bg-yellow-100 text-yellow-800"
-                                            }`}
-                                    >
-                                        {purchase.status}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="border-t pt-3">
-                                <h4 className="font-semibold mb-2">Items:</h4>
-                                <div className="space-y-2">
-                                    {purchase.items && purchase.items.map((item, idx) => (
-                                        <div
-                                            key={idx}
-                                            className="flex justify-between items-center bg-gray-50 p-2 rounded"
-                                        >
-                                            <span>{item.name}</span>
-                                            <span className="text-gray-600">
-                                                Qty: {item.quantity} × Rs. {item.price} = Rs.{" "}
-                                                {item.quantity * item.price}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm border-b">
+                                        <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${purchase.status === "Completed"
+                                                ? "bg-green-100 text-green-800"
+                                                : "bg-yellow-100 text-yellow-800"
+                                            }`}>
+                                            {purchase.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
         </div>
