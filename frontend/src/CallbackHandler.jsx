@@ -10,18 +10,22 @@ const CallbackHandler = () => {
 
     useEffect(() => {
         const token = searchParams.get('token');
+        const email = searchParams.get('email');
+        const name = searchParams.get('name');
+        const sub = searchParams.get('sub');
+
+        console.log('Callback received:', { token: !!token, email, name, sub });
 
         if (token) {
             try {
-                // Decode token to get user info (without verification - backend already verified it)
-                const decoded = jwtDecode(token);
-
                 const userInfo = {
-                    sub: decoded.sub,
-                    email: decoded.email || '',
-                    name: decoded.name || '',
-                    picture: decoded.picture || ''
+                    sub: sub || '',
+                    email: email || '',
+                    name: name || 'User',
+                    picture: ''
                 };
+
+                console.log('Storing user info:', userInfo);
 
                 // Store token and user info
                 login(token, userInfo);

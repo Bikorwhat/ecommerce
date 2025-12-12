@@ -33,10 +33,24 @@ def callback(request):
         id_token = token.get('id_token')
         user_info = token.get('userinfo')
         
+        print(f"User info from Auth0: {user_info}")
+        
         if access_token and user_info:
-            # Redirect to frontend with the access token
-            # The frontend will store this token and use it for API calls
-            frontend_url = f"{settings.FRONTEND_URL}/auth/callback?token={access_token}"
+            # Extract user details
+            email = user_info.get('email', '')
+            name = user_info.get('name', '')
+            sub = user_info.get('sub', '')
+            
+            # Redirect to frontend with both token and user info
+            # URL encode the parameters
+            from urllib.parse import urlencode
+            params = {
+                'token': access_token,
+                'email': email,
+                'name': name,
+                'sub': sub
+            }
+            frontend_url = f"{settings.FRONTEND_URL}/auth/callback?{urlencode(params)}"
             return redirect(frontend_url)
         
         return HttpResponse("Authentication failed - no token received", status=400)
