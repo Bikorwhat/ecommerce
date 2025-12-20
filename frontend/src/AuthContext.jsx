@@ -36,6 +36,8 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         localStorage.removeItem('auth_token');
         localStorage.removeItem('auth_user');
+        localStorage.removeItem('cart');
+        localStorage.removeItem('pending_purchase_items');
     }, []);
 
     const isAuthenticated = useCallback(() => {

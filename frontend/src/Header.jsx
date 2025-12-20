@@ -5,7 +5,7 @@ import { AuthContext } from "./AuthContext";
 import api, { API_BASE } from "./api";
 
 const Header = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const { user, logout, isAuthenticated } = useContext(AuthContext);
   const uniqueItemCount = cart.length;
   const navigate = useNavigate();
@@ -19,6 +19,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
+    setCart([]); // Clear cart state immediately
     navigate("/", { replace: true });
   }
 
