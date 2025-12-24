@@ -1,6 +1,3 @@
-# Root level gitignore for the entire project
-
-# Environment files (CRITICAL - contains secrets!)
 .env
 .env.local
 .env.*.local
