@@ -1,4 +1,3 @@
-# Environment variables (CRITICAL - contains secrets!)
 .env
 .env.local
 .env.*.local
